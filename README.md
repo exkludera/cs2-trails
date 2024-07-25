@@ -1,9 +1,6 @@
 # cs2-trails
->plugin requested from counterstrikesharp discord
-
-<br>
-
-**players can pick colored/custom trails**
+**a plugin that allows players to use custom trails**
+> request from counterstrikesharp discord
 
 <br>
 
@@ -21,12 +18,56 @@
 
 <br>
 
+## information
+
 > [!CAUTION]
 > This plugin needs [Cruze03/Clientprefs](https://github.com/Cruze03/Clientprefs) to work!
 
 > [!NOTE]
 > inspired by [Nickelony/Trails-Chroma](https://github.com/Nickelony/Trails-Chroma)
 
-<br>
-
 <img src="https://media.discordapp.net/attachments/1051988905320255509/1146537451750432778/ezgif.com-video-to-gif_2.gif?ex=66a359f6&is=66a20876&hm=768e346857f44792cf5b2917fe55b525522029ecccac95bb765b881baa6660d7&" width="250">>
+
+## config
+```json
+{
+  "Prefix": "{red}[{orange}T{yellow}r{green}a{lightblue}i{darkblue}l{purple}s{red}]",
+  "Settings": {
+    "Width": 0.5,
+    "Life": 1,
+    "TicksForUpdate": 2,
+    "PermissionFlag": "@css/reservation",
+    "ChatMessages": true,
+    "CenterHtmlMenu": false
+  },
+  "Commands": {
+    "TrailsMenu": [
+      "trails",
+      "trail"
+    ]
+  },
+  "Trails": {
+    "1": {
+      "name": "Rainbow Trail",
+      "effect": "rainbow"
+    },
+    "2": {
+      "name": "Red Trail",
+      "effect": "255 0 0"
+    },
+    "3": {
+      "name": "Green Trail",
+      "effect": "0 255 0"
+    },
+    "4": {
+      "name": "Blue Trail",
+      "effect": "0 0 255"
+    },
+    "5": {
+      "name": "Custom Trail",
+      "effect": "particles/ambient_fx/ambient_sparks_glow.vpcf"
+    }
+  },
+  "ConfigVersion": 1
+}
+```
