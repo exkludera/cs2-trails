@@ -1,5 +1,4 @@
 ﻿using CounterStrikeSharp.API.Core;
-using CounterStrikeSharp.API.Modules.Admin;
 using CounterStrikeSharp.API.Modules.Commands;
 using CounterStrikeSharp.API.Modules.Menu;
 
@@ -10,25 +9,28 @@ public partial class Trails : BasePlugin, IPluginConfig<TrailsConfig>
     [CommandHelper(minArgs: 0, whoCanExecute: CommandUsage.CLIENT_ONLY)]
     public void CommandOpenMenu(CCSPlayerController player, CommandInfo command)
     {
-        if (Config.Setting.PermissionFlag != "" && !AdminManager.PlayerHasPermissions(player, Config.Setting.PermissionFlag))
+        if (checkPermissions(player))
         {
             PrintToChat(player, "NoPermission");
             return;
         }
-
-        OpenMenu(player);
+        
+        if (Config.Setting.CenterHtmlMenu)
+            OpenCenterMenu(player);
+        else
+            OpenChatMenu(player);
     }
 
-    public void OpenMenu(CCSPlayerController player)
+    public void OpenChatMenu(CCSPlayerController player)
     {
-        var menu = new ChatMenu(Localizer["MenuTitle"]);
+        ChatMenu menu = new(Localizer["MenuTitle"]);
 
         menu.AddMenuOption("None", (player, option) => {
 
-            if (ClientprefsApi == null || g_iCookieID == -1)
+            if (ClientprefsApi == null || TrailCookie == -1)
                 return;
 
-            ClientprefsApi.SetPlayerCookie(player, g_iCookieID, "none");
+            ClientprefsApi.SetPlayerCookie(player, TrailCookie, "none");
             playerCookies[player] = "none";
 
             PrintToChat(player, Localizer["TrailRemove"]);
@@ -41,15 +43,49 @@ public partial class Trails : BasePlugin, IPluginConfig<TrailsConfig>
 
             menu.AddMenuOption(trailName, (player, option) => {
 
-                if (ClientprefsApi == null || g_iCookieID == -1)
+                if (ClientprefsApi == null || TrailCookie == -1)
                     return;
 
-                ClientprefsApi.SetPlayerCookie(player, g_iCookieID, trailId);
+                ClientprefsApi.SetPlayerCookie(player, TrailCookie, trailId);
                 playerCookies[player] = trailId;
 
                 PrintToChat(player, Localizer["TrailEquip", trailName]);
             });
         }
         MenuManager.OpenChatMenu(player, menu);
+    }
+
+    public void OpenCenterMenu(CCSPlayerController player)
+    {
+        CenterHtmlMenu menu = new(Localizer["MenuTitle"], this);
+
+        menu.AddMenuOption("None", (player, option) => {
+
+            if (ClientprefsApi == null || TrailCookie == -1)
+                return;
+
+            ClientprefsApi.SetPlayerCookie(player, TrailCookie, "none");
+            playerCookies[player] = "none";
+
+            PrintToChat(player, Localizer["TrailRemove"]);
+        });
+
+        foreach (KeyValuePair<string, Dictionary<string, string>> trail in Config.Trails)
+        {
+            string trailId = trail.Key;
+            string trailName = trail.Value["name"];
+
+            menu.AddMenuOption(trailName, (player, option) => {
+
+                if (ClientprefsApi == null || TrailCookie == -1)
+                    return;
+
+                ClientprefsApi.SetPlayerCookie(player, TrailCookie, trailId);
+                playerCookies[player] = trailId;
+
+                PrintToChat(player, Localizer["TrailEquip", trailName]);
+            });
+        }
+        MenuManager.OpenCenterHtmlMenu(this, player, menu);
     }
 }
