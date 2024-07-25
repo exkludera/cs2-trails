@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "trails-chroma", "src\trails-chroma.csproj", "{CBB9CEB5-B253-4ADF-98E5-34E5CE1D403F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trails", "src\Trails.csproj", "{CBB9CEB5-B253-4ADF-98E5-34E5CE1D403F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientprefsApi", "ClientprefsApi\ClientprefsApi.csproj", "{985200BF-99AE-4B8C-9E0D-63DE9E7116C9}"
 EndProject

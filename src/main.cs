@@ -11,13 +11,14 @@ namespace Trails;
 
 public partial class Trails : BasePlugin, IPluginConfig<TrailsConfig>
 {
-    public override string ModuleName => "Trails Chroma";
-    public override string ModuleVersion => "1.0.0";
+    public override string ModuleName => "Trails";
+    public override string ModuleVersion => "1.0.1";
     public override string ModuleAuthor => "exkludera";
 
     public override void Load(bool hotReload)
     {
         RegisterListener<OnTick>(EveryTick);
+        RegisterListener<OnServerPrecacheResources>(OnServerPrecacheResources);
 
         Dictionary<IEnumerable<string>, (string description, CommandInfo.CommandCallback handler)> commandslist = new()
         {
@@ -30,16 +31,6 @@ public partial class Trails : BasePlugin, IPluginConfig<TrailsConfig>
 
         for (int i = 0; i < 64; i++)
             TrailEndOrigin[i] = new();
-
-        if (hotReload)
-        {
-            foreach (CCSPlayerController player in Utilities.GetPlayers())
-            {
-                if (ClientprefsApi == null || g_iCookieID == -1) return;
-                var cookieValue = ClientprefsApi.GetPlayerCookie(player, g_iCookieID);
-                playerCookies[player] = cookieValue;
-            }
-        }
     }
 
     public override void Unload(bool hotReload)
@@ -47,6 +38,7 @@ public partial class Trails : BasePlugin, IPluginConfig<TrailsConfig>
         base.Unload(hotReload);
 
         RemoveListener<OnTick>(EveryTick);
+        RemoveListener<OnServerPrecacheResources>(OnServerPrecacheResources);
 
         if (ClientprefsApi == null) return;
         ClientprefsApi.OnDatabaseLoaded -= OnClientprefDatabaseReady;
@@ -70,6 +62,17 @@ public partial class Trails : BasePlugin, IPluginConfig<TrailsConfig>
         {
             Logger.LogError("{trails-chroma} Fail load ClientprefsApi! | " + ex.Message);
             throw new Exception("[trails-chroma] Fail load ClientprefsApi! | " + ex.Message);
+        }
+
+        if (hotReload)
+        {
+            if (ClientprefsApi == null || g_iCookieID == -1) return;
+            foreach (CCSPlayerController player in Utilities.GetPlayers())
+            {
+                if (!ClientprefsApi.ArePlayerCookiesCached(player)) continue;
+                var cookieValue = ClientprefsApi.GetPlayerCookie(player, g_iCookieID);
+                playerCookies[player] = cookieValue;
+            }
         }
     }
 

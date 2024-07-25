@@ -20,6 +20,20 @@ public partial class Trails : BasePlugin, IPluginConfig<TrailsConfig>
             player.PrintToChat($" {Config.Prefix} {Message}");
     }
 
+    public void OnServerPrecacheResources(ResourceManifest manifest)
+    {
+        foreach (var trail in Config.Trails)
+        {
+            var trailData = trail.Value;
+
+            if (trailData.TryGetValue("effect", out var vpcfValue))
+            {
+                if (vpcfValue.EndsWith(".vpcf"))
+                    manifest.AddResource(vpcfValue);
+            }
+        }
+    }
+
     public void OnClientprefDatabaseReady()
     {
         if (ClientprefsApi == null) return;
@@ -56,58 +70,80 @@ public partial class Trails : BasePlugin, IPluginConfig<TrailsConfig>
             if (!player.PawnIsAlive || !player.IsValid || player.IsBot || !playerCookies.ContainsKey(player))
                 continue;
 
-            CreateBeam(player, player.PlayerPawn.Value!.AbsOrigin!, Config.Setting.Life, Color.FromArgb(0, 0, 0, 0));
+            CreateTrail(player, player.PlayerPawn.Value!.AbsOrigin!, Config.Setting.Life, Color.FromArgb(0, 0, 0, 0));
         }
     }
 
-    public void CreateBeam(CCSPlayerController player, Vector absOrigin, float lifetime, Color color)
+    public void CreateTrail(CCSPlayerController player, Vector absOrigin, float lifetime, Color effect)
     {
         if (player != null && playerCookies.TryGetValue(player, out var cookieValue))
         {
             if (string.IsNullOrEmpty(cookieValue) || cookieValue == "none")
                 return;
 
-            if (Config.Trails.TryGetValue(cookieValue, out var trailData) && trailData.TryGetValue("color", out var colorValue))
+            if (Config.Trails.TryGetValue(cookieValue, out var trailData) && trailData.TryGetValue("effect", out var effectValue))
             {
-                var beam = Utilities.CreateEntityByName<CBeam>("env_beam")!;
 
-                beam.RenderMode = RenderMode_t.kRenderTransColor;
-                beam.Width = Config.Setting.Width;
-
-                if (string.IsNullOrEmpty(colorValue))
+                if (effectValue.EndsWith(".vpcf"))
                 {
-                    KnownColor? randomColorName = (KnownColor?)Enum.GetValues(typeof(KnownColor)).GetValue(Random.Next(Enum.GetValues(typeof(KnownColor)).Length));
-                    if (randomColorName.HasValue)
+                    var entity = Utilities.CreateEntityByName<CParticleSystem>("info_particle_system")!;
+
+                    entity.EffectName = effectValue;
+                    entity.DispatchSpawn();
+                    entity.Teleport(absOrigin, null, new Vector());
+                    entity.AcceptInput("Start");
+                    entity.AcceptInput("FollowEntity", player.PlayerPawn?.Value!, player.PlayerPawn?.Value!, "!activator");
+
+                    AddTimer(lifetime, () =>
                     {
-                        color = Color.FromKnownColor(randomColorName.Value);
-                    }
+                        if (entity != null && entity.IsValid)
+                            entity.Remove();
+                    });
                 }
+
                 else
                 {
-                    var colorParts = colorValue.Split(' ');
-                    if (colorParts.Length == 4 &&
-                        int.TryParse(colorParts[0], out var r) &&
-                        int.TryParse(colorParts[1], out var g) &&
-                        int.TryParse(colorParts[2], out var b) &&
-                        int.TryParse(colorParts[3], out var a))
+
+                    var beam = Utilities.CreateEntityByName<CBeam>("env_beam")!;
+
+                    beam.RenderMode = RenderMode_t.kRenderTransColor;
+                    beam.Width = Config.Setting.Width;
+
+                    if (string.IsNullOrEmpty(effectValue))
                     {
-                        color = Color.FromArgb(a, r, g, b);
+                        KnownColor? randomColorName = (KnownColor?)Enum.GetValues(typeof(KnownColor)).GetValue(Random.Next(Enum.GetValues(typeof(KnownColor)).Length));
+                        if (randomColorName.HasValue)
+                        {
+                            effect = Color.FromKnownColor(randomColorName.Value);
+                        }
                     }
+                    else
+                    {
+                        var colorParts = effectValue.Split(' ');
+                        if (colorParts.Length == 4 &&
+                            int.TryParse(colorParts[0], out var r) &&
+                            int.TryParse(colorParts[1], out var g) &&
+                            int.TryParse(colorParts[2], out var b) &&
+                            int.TryParse(colorParts[3], out var a))
+                        {
+                            effect = Color.FromArgb(a, r, g, b);
+                        }
+                    }
+
+                    beam.Render = effect;
+                    beam.Teleport(absOrigin, new QAngle(), new Vector());
+
+                    VecCopy(TrailEndOrigin[player.Slot], beam.EndPos);
+                    VecCopy(absOrigin, TrailEndOrigin[player.Slot]);
+
+                    Utilities.SetStateChanged(beam, "CBeam", "m_vecEndPos");
+
+                    AddTimer(lifetime, () =>
+                    {
+                        if (beam != null && beam.DesignerName == "env_beam")
+                            beam.Remove();
+                    });
                 }
-
-                beam.Render = color;
-                beam.Teleport(absOrigin, new QAngle(), new Vector());
-
-                VecCopy(TrailEndOrigin[player.Slot], beam.EndPos);
-                VecCopy(absOrigin, TrailEndOrigin[player.Slot]);
-
-                Utilities.SetStateChanged(beam, "CBeam", "m_vecEndPos");
-
-                AddTimer(lifetime, () =>
-                {
-                    if (beam != null && beam.DesignerName == "env_beam")
-                        beam.Remove();
-                });
             }
         }
     }
