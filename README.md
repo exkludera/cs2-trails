@@ -3,7 +3,7 @@
 
 <br>
 
-**players can pick a colored/custom trails**
+**players can pick colored/custom trails**
 
 <br>
 
