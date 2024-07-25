@@ -9,8 +9,8 @@
 
 <details>
 	<summary>showcase</summary>
-	<img src="https://media.discordapp.net/attachments/1039451649254629406/1266039352040099942/image.png?ex=66a3b287&is=66a26107&hm=491ee4c3ceaecad73e95b973e37966e2b09df2388700cfd04831cc96bb7bac8b&=&format=webp&quality=lossless" width="150"> <br>
-	<img src="https://media.discordapp.net/attachments/1039451649254629406/1266039408839102534/image.png?ex=66a3b294&is=66a26114&hm=f306254d49a47b4b8e9714604e430ed2e8277e8e1cb85a2bcea00bfc0719ee4b&=&format=webp&quality=lossless" width="100"> <br>
+	<img src="https://media.discordapp.net/attachments/1039451649254629406/1266039352040099942/image.png?ex=66a3b287&is=66a26107&hm=491ee4c3ceaecad73e95b973e37966e2b09df2388700cfd04831cc96bb7bac8b&=&format=webp&quality=lossless" width="100"> <br>
+	<img src="https://media.discordapp.net/attachments/1039451649254629406/1266039408839102534/image.png?ex=66a3b294&is=66a26114&hm=f306254d49a47b4b8e9714604e430ed2e8277e8e1cb85a2bcea00bfc0719ee4b&=&format=webp&quality=lossless" width="150"> <br>
 	<img src="https://media.discordapp.net/attachments/1039451649254629406/1266015953544810506/image.png?ex=66a39cbc&is=66a24b3c&hm=76d6e30e347ded99c9cc9b70cca140d9c325c3a612904858cb5c88f88052cb0c&=&format=webp&quality=lossless" width="200"> <br>
 	<img src="https://media.discordapp.net/attachments/1039451649254629406/1266015954073026631/image.png?ex=66a39cbc&is=66a24b3c&hm=4b1ec986649bcba773d92ad3ffc0b94f3a113274ebf8ae1c18e44a484c0d3f2f&=&format=webp&quality=lossless" width="250"> <br>
 	<img src="https://media.discordapp.net/attachments/1039451649254629406/1266015954517889115/image.png?ex=66a39cbc&is=66a24b3c&hm=d16ceb95c5ae4e75cf84892ba44440125f4fd65629dc27401097ae5e9cd86874&=&format=webp&quality=lossless" width="250"> <br>
