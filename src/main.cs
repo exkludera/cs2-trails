@@ -9,7 +9,7 @@ namespace Trails;
 public partial class Trails : BasePlugin, IPluginConfig<TrailsConfig>
 {
     public override string ModuleName => "Trails";
-    public override string ModuleVersion => "1.0.3";
+    public override string ModuleVersion => "1.0.4";
     public override string ModuleAuthor => "exkludera";
 
     public override void Load(bool hotReload)
@@ -53,7 +53,7 @@ public partial class Trails : BasePlugin, IPluginConfig<TrailsConfig>
         {
             if (ClientprefsApi == null || TrailCookie == -1) return;
 
-            foreach (CCSPlayerController player in Utilities.GetPlayers())
+            foreach (CCSPlayerController player in Utilities.GetPlayers().Where(p => !p.IsBot))
             {
                 if (!ClientprefsApi.ArePlayerCookiesCached(player)) continue;
                 playerCookies[player] = ClientprefsApi.GetPlayerCookie(player, TrailCookie);

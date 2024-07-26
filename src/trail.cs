@@ -16,7 +16,7 @@ public partial class Trails : BasePlugin, IPluginConfig<TrailsConfig>
 
         Tick = 0;
 
-        foreach (CCSPlayerController player in Utilities.GetPlayers())
+        foreach (CCSPlayerController player in Utilities.GetPlayers().Where(p => !p.IsBot))
         {
             if (!player.PawnIsAlive || !playerCookies.ContainsKey(player) || checkPermissions(player))
                 continue;
@@ -24,7 +24,7 @@ public partial class Trails : BasePlugin, IPluginConfig<TrailsConfig>
             var absOrgin = player.PlayerPawn.Value!.AbsOrigin!;
 
             if (VecCalculateDistance(TrailLastOrigin[player.Slot], absOrgin) <= 5.0f)
-                return;
+                continue;
 
             VecCopy(absOrgin, TrailLastOrigin[player.Slot]);
 
@@ -99,11 +99,12 @@ public partial class Trails : BasePlugin, IPluginConfig<TrailsConfig>
             return;
         }
 
-        var beam = Utilities.CreateEntityByName<CBeam>("env_beam")!;
+        var beam = Utilities.CreateEntityByName<CEnvBeam>("env_beam")!;
 
         beam.Width = widthValue;
         beam.Render = color;
-        beam.SetModel(trailData.File);
+        beam.SpriteName = trailData.File; // doesnt work :(
+        beam.SetModel(trailData.File); // how to fix? :(
 
         beam.Teleport(absOrigin, new QAngle(), new Vector());
 
