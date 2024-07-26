@@ -1,6 +1,8 @@
 {
   "MenuTitle": "Select Trail",
+  "MenuNoTrail": "None",
+
   "NoPermission": "{red}You don't have permission to use this command.",
-  "TrailEquip": "{default}Equiped: {0}",
+  "TrailSelect": "{green}Selected: {0}",
   "TrailRemove": "{red}Removed your trail"
 }

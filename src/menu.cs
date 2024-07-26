@@ -11,11 +11,11 @@ public partial class Trails : BasePlugin, IPluginConfig<TrailsConfig>
     {
         if (checkPermissions(player))
         {
-            PrintToChat(player, "NoPermission");
+            PrintToChat(player, Localizer["NoPermission"]);
             return;
         }
         
-        if (Config.Setting.CenterHtmlMenu)
+        if (Config.CenterHtmlMenu)
             OpenCenterMenu(player);
         else
             OpenChatMenu(player);
@@ -25,7 +25,7 @@ public partial class Trails : BasePlugin, IPluginConfig<TrailsConfig>
     {
         ChatMenu menu = new(Localizer["MenuTitle"]);
 
-        menu.AddMenuOption("None", (player, option) => {
+        menu.AddMenuOption(Localizer["MenuNoTrail"], (player, option) => {
 
             if (ClientprefsApi == null || TrailCookie == -1)
                 return;
@@ -36,22 +36,20 @@ public partial class Trails : BasePlugin, IPluginConfig<TrailsConfig>
             PrintToChat(player, Localizer["TrailRemove"]);
         });
 
-        foreach (KeyValuePair<string, Dictionary<string, string>> trail in Config.Trails)
+        foreach (KeyValuePair<string, Trail> trail in Config.Trails)
         {
-            string trailId = trail.Key;
-            string trailName = trail.Value["name"];
-
-            menu.AddMenuOption(trailName, (player, option) => {
+            menu.AddMenuOption(trail.Value.Name, (player, option) => {
 
                 if (ClientprefsApi == null || TrailCookie == -1)
                     return;
 
-                ClientprefsApi.SetPlayerCookie(player, TrailCookie, trailId);
-                playerCookies[player] = trailId;
+                ClientprefsApi.SetPlayerCookie(player, TrailCookie, trail.Key);
+                playerCookies[player] = trail.Key;
 
-                PrintToChat(player, Localizer["TrailEquip", trailName]);
+                PrintToChat(player, Localizer["TrailSelect", trail.Value.Name]);
             });
         }
+
         MenuManager.OpenChatMenu(player, menu);
     }
 
@@ -59,7 +57,7 @@ public partial class Trails : BasePlugin, IPluginConfig<TrailsConfig>
     {
         CenterHtmlMenu menu = new(Localizer["MenuTitle"], this);
 
-        menu.AddMenuOption("None", (player, option) => {
+        menu.AddMenuOption(Localizer["MenuNoTrail"], (player, option) => {
 
             if (ClientprefsApi == null || TrailCookie == -1)
                 return;
@@ -70,22 +68,20 @@ public partial class Trails : BasePlugin, IPluginConfig<TrailsConfig>
             PrintToChat(player, Localizer["TrailRemove"]);
         });
 
-        foreach (KeyValuePair<string, Dictionary<string, string>> trail in Config.Trails)
+        foreach (KeyValuePair<string, Trail> trail in Config.Trails)
         {
-            string trailId = trail.Key;
-            string trailName = trail.Value["name"];
-
-            menu.AddMenuOption(trailName, (player, option) => {
+            menu.AddMenuOption(trail.Value.Name, (player, option) => {
 
                 if (ClientprefsApi == null || TrailCookie == -1)
                     return;
 
-                ClientprefsApi.SetPlayerCookie(player, TrailCookie, trailId);
-                playerCookies[player] = trailId;
+                ClientprefsApi.SetPlayerCookie(player, TrailCookie, trail.Key);
+                playerCookies[player] = trail.Key;
 
-                PrintToChat(player, Localizer["TrailEquip", trailName]);
+                PrintToChat(player, Localizer["TrailSelect", trail.Value.Name]);
             });
         }
+
         MenuManager.OpenCenterHtmlMenu(this, player, menu);
     }
 }

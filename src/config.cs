@@ -1,34 +1,41 @@
 ﻿using CounterStrikeSharp.API.Core;
 using System.Text.Json.Serialization;
 
+public class Trail
+{
+    public string Name { get; set; } = string.Empty;
+    public string File { get; set; } = string.Empty;
+    public string Color { get; set; } = string.Empty;
+    public float Width { get; set; }
+    public float Lifetime { get; set; }
+}
+
 public class TrailsConfig : BasePluginConfig
 {
-    [JsonPropertyName("Prefix")] public string Prefix { get; set; } = "{red}[{orange}T{yellow}r{green}a{lightblue}i{darkblue}l{purple}s{red}]";
+    [JsonPropertyName("Prefix")]
+    public string Prefix { get; set; } = "{red}[{orange}T{yellow}r{green}a{lightblue}i{darkblue}l{purple}s{red}]";
 
-    [JsonPropertyName("Settings")] public Settings Setting { get; set; } = new Settings();
-    public class Settings
-    {
-        public float Width { get; set; } = 0.5f;
-        public float Life { get; set; } = 1f;
-        public int TicksForUpdate { get; set; } = 2;
-        public string PermissionFlag { get; set; } = "@css/reservation";
-        public bool ChatMessages { get; set; } = true;
-        public bool CenterHtmlMenu { get; set; } = false;
-    }
+    [JsonPropertyName("PermissionFlag")]
+    public string PermissionFlag { get; set; } = "@css/reservation";
 
-    [JsonPropertyName("Commands")] public Commands Command { get; set; } = new Commands();
-    public class Commands
-    {
-        public string[] TrailsMenu { get; set; } = ["trails", "trail"];
-    }
+    [JsonPropertyName("MenuCommands")]
+    public string[] MenuCommands { get; set; } = ["trails", "trail"];
+
+    [JsonPropertyName("ChatMessages")]
+    public bool ChatMessages { get; set; } = true;
+
+    [JsonPropertyName("CenterHtmlMenu")]
+    public bool CenterHtmlMenu { get; set; } = false;
+
+    [JsonPropertyName("TicksForUpdate")]
+    public int TicksForUpdate { get; set; } = 1;
 
     [JsonPropertyName("Trails")]
-    public Dictionary<string, Dictionary<string, string>> Trails { get; set; } = new()
+    public Dictionary<string, Trail> Trails { get; set; } = new()
     {
-        { "1", new Dictionary<string, string> { { "name", "Rainbow Trail" }, { "effect", "rainbow" } } },
-        { "2", new Dictionary<string, string> { { "name", "Red Trail" }, { "effect", "255 0 0" } } },
-        { "3", new Dictionary<string, string> { { "name", "Green Trail" }, { "effect", "0 255 0" } } },
-        { "4", new Dictionary<string, string> { { "name", "Blue Trail" }, { "effect", "0 0 255" } } },
-        { "5", new Dictionary<string, string> { { "name", "Custom Trail" }, { "effect", "particles/ambient_fx/ambient_sparks_glow.vpcf" } } },
+        { "1", new Trail { Name = "Rainbow Trail", Color = "rainbow" } },
+        { "2", new Trail { Name = "Particle Trail", File = "particles/ambient_fx/ambient_sparks_glow.vpcf" } },
+        { "3", new Trail { Name = "Red Trail", Color = "255 0 0", Width = 2.0f, Lifetime = 3.0f } },
+        { "4", new Trail { Name = "Example Settings", Color = "255 255 255", Width = 1.0f, Lifetime = 1.0f, File = "materials/sprites/laserbeam.vtex" } }
     };
 }

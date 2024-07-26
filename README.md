@@ -32,40 +32,35 @@
 ```json
 {
   "Prefix": "{red}[{orange}T{yellow}r{green}a{lightblue}i{darkblue}l{purple}s{red}]",
-  "Settings": {
-    "Width": 0.5,
-    "Life": 1,
-    "TicksForUpdate": 2,
-    "PermissionFlag": "@css/reservation",
-    "ChatMessages": true,
-    "CenterHtmlMenu": false
-  },
-  "Commands": {
-    "TrailsMenu": [
-      "trails",
-      "trail"
-    ]
-  },
+  "PermissionFlag": "@css/reservation",
+  "MenuCommands": [
+    "trails",
+    "trail"
+  ],
+  "ChatMessages": true,
+  "CenterHtmlMenu": false,
+  "TicksForUpdate": 1,
   "Trails": {
     "1": {
-      "name": "Rainbow Trail",
-      "effect": "rainbow"
+      "Name": "Rainbow Trail",
+      "Color": "rainbow"
     },
     "2": {
-      "name": "Red Trail",
-      "effect": "255 0 0"
+      "Name": "Particle Trail",
+      "File": "particles/ambient_fx/ambient_sparks_glow.vpcf"
     },
     "3": {
-      "name": "Green Trail",
-      "effect": "0 255 0"
+      "Name": "Red Trail",
+      "Color": "255 0 0",
+      "Width": 2,
+      "Lifetime": 3
     },
     "4": {
-      "name": "Blue Trail",
-      "effect": "0 0 255"
-    },
-    "5": {
-      "name": "Custom Trail",
-      "effect": "particles/ambient_fx/ambient_sparks_glow.vpcf"
+      "Name": "Example Settings",
+      "File": "materials/sprites/laserbeam.vtex",
+      "Color": "255 255 255",
+      "Width": 1,
+      "Lifetime": 1
     }
   },
   "ConfigVersion": 1

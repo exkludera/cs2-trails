@@ -1,29 +1,25 @@
 using CounterStrikeSharp.API;
 using CounterStrikeSharp.API.Core;
-using CounterStrikeSharp.API.Core.Capabilities;
-using CounterStrikeSharp.API.Core.Translations;
 using CounterStrikeSharp.API.Modules.Commands;
-using Microsoft.Extensions.Logging;
 using static CounterStrikeSharp.API.Core.Listeners;
-
-using Clientprefs.API;
+using Microsoft.Extensions.Logging;
 
 namespace Trails;
 
 public partial class Trails : BasePlugin, IPluginConfig<TrailsConfig>
 {
     public override string ModuleName => "Trails";
-    public override string ModuleVersion => "1.0.2";
+    public override string ModuleVersion => "1.0.3";
     public override string ModuleAuthor => "exkludera";
 
     public override void Load(bool hotReload)
     {
-        RegisterListener<OnTick>(EveryTick);
+        RegisterListener<OnTick>(OnTick);
         RegisterListener<OnServerPrecacheResources>(OnServerPrecacheResources);
 
         Dictionary<IEnumerable<string>, (string description, CommandInfo.CommandCallback handler)> commandslist = new()
         {
-            {Config.Command.TrailsMenu, ("Trails Menu", CommandOpenMenu!)},
+            {Config.MenuCommands, ("Trails Menu", CommandOpenMenu!)},
         };
 
         foreach (KeyValuePair<IEnumerable<string>, (string description, CommandInfo.CommandCallback handler)> commands in commandslist)
@@ -36,22 +32,6 @@ public partial class Trails : BasePlugin, IPluginConfig<TrailsConfig>
             TrailLastOrigin[i] = new();
         }
     }
-
-    public override void Unload(bool hotReload)
-    {
-        base.Unload(hotReload);
-
-        RemoveListener<OnTick>(EveryTick);
-        RemoveListener<OnServerPrecacheResources>(OnServerPrecacheResources);
-
-        if (ClientprefsApi == null) return;
-        ClientprefsApi.OnDatabaseLoaded -= OnClientprefDatabaseReady;
-        ClientprefsApi.OnPlayerCookiesCached -= OnPlayerCookiesCached;
-    }
-
-    private readonly PluginCapability<IClientprefsApi> g_PluginCapability = new("Clientprefs");
-    private IClientprefsApi? ClientprefsApi;
-    private int TrailCookie = 0;
 
     public override void OnAllPluginsLoaded(bool hotReload)
     {
@@ -72,6 +52,7 @@ public partial class Trails : BasePlugin, IPluginConfig<TrailsConfig>
         if (hotReload)
         {
             if (ClientprefsApi == null || TrailCookie == -1) return;
+
             foreach (CCSPlayerController player in Utilities.GetPlayers())
             {
                 if (!ClientprefsApi.ArePlayerCookiesCached(player)) continue;
@@ -80,10 +61,15 @@ public partial class Trails : BasePlugin, IPluginConfig<TrailsConfig>
         }
     }
 
-    public TrailsConfig Config { get; set; } = new TrailsConfig();
-    public void OnConfigParsed(TrailsConfig config)
+    public override void Unload(bool hotReload)
     {
-        config.Prefix = StringExtensions.ReplaceColorTags(config.Prefix);
-        Config = config;
+        base.Unload(hotReload);
+
+        RemoveListener<OnTick>(OnTick);
+        RemoveListener<OnServerPrecacheResources>(OnServerPrecacheResources);
+
+        if (ClientprefsApi == null) return;
+        ClientprefsApi.OnDatabaseLoaded -= OnClientprefDatabaseReady;
+        ClientprefsApi.OnPlayerCookiesCached -= OnPlayerCookiesCached;
     }
 }
