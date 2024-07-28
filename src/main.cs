@@ -17,7 +17,7 @@ public partial class Trails : BasePlugin, IPluginConfig<Config>
         RegisterListener<OnTick>(OnTick);
         RegisterListener<OnServerPrecacheResources>(OnServerPrecacheResources);
 
-        foreach (var command in Config.MenuCommands.Split(';'))
+        foreach (var command in Config.MenuCommands.Split(','))
             AddCommand($"css_{command}", "Open Trails Menu", CommandOpenMenu!);
 
         for (int i = 0; i < 64; i++)
