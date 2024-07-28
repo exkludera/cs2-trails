@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace Trails;
 
-public partial class Trails : BasePlugin, IPluginConfig<TrailsConfig>
+public partial class Trails : BasePlugin, IPluginConfig<Config>
 {
     public void OnTick()
     {

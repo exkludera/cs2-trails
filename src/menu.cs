@@ -4,7 +4,7 @@ using CounterStrikeSharp.API.Modules.Menu;
 
 namespace Trails;
 
-public partial class Trails : BasePlugin, IPluginConfig<TrailsConfig>
+public partial class Trails : BasePlugin, IPluginConfig<Config>
 {
     [CommandHelper(minArgs: 0, whoCanExecute: CommandUsage.CLIENT_ONLY)]
     public void CommandOpenMenu(CCSPlayerController player, CommandInfo command)

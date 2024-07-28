@@ -6,7 +6,7 @@ using CounterStrikeSharp.API.Core.Translations;
 
 namespace Trails;
 
-public partial class Trails : BasePlugin, IPluginConfig<TrailsConfig>
+public partial class Trails : BasePlugin, IPluginConfig<Config>
 {
     public override string ModuleName => "Trails";
     public override string ModuleVersion => "1.0.5";
