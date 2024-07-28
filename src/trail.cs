@@ -18,7 +18,7 @@ public partial class Trails : BasePlugin, IPluginConfig<TrailsConfig>
 
         foreach (CCSPlayerController player in Utilities.GetPlayers().Where(p => !p.IsBot))
         {
-            if (!player.PawnIsAlive || !playerCookies.ContainsKey(player) || checkPermissions(player))
+            if (!player.PawnIsAlive || !playerCookies.ContainsKey(player) || !HasPermission(player))
                 continue;
 
             var absOrgin = player.PlayerPawn.Value!.AbsOrigin!;

@@ -34,12 +34,9 @@
 {
   "Prefix": "{red}[{orange}T{yellow}r{green}a{lightblue}i{darkblue}l{purple}s{red}]",
   "PermissionFlag": "@css/reservation",
-  "MenuCommands": [
-    "trails",
-    "trail"
-  ],
-  "ChatMessages": true,
+  "MenuCommands": "trails,trail",
   "CenterHtmlMenu": false,
+  "ChatMessages": true,
   "TicksForUpdate": 1,
   "Trails": {
     "1": {

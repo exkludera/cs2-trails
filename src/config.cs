@@ -10,7 +10,7 @@ public class Trail
     public float Lifetime { get; set; }
 }
 
-public class TrailsConfig : BasePluginConfig
+public class Config : BasePluginConfig
 {
     [JsonPropertyName("Prefix")]
     public string Prefix { get; set; } = "{red}[{orange}T{yellow}r{green}a{lightblue}i{darkblue}l{purple}s{red}]";
@@ -19,13 +19,13 @@ public class TrailsConfig : BasePluginConfig
     public string PermissionFlag { get; set; } = "@css/reservation";
 
     [JsonPropertyName("MenuCommands")]
-    public string[] MenuCommands { get; set; } = ["trails", "trail"];
-
-    [JsonPropertyName("ChatMessages")]
-    public bool ChatMessages { get; set; } = true;
+    public string MenuCommands { get; set; } = "trails,trail";
 
     [JsonPropertyName("CenterHtmlMenu")]
     public bool CenterHtmlMenu { get; set; } = false;
+
+    [JsonPropertyName("ChatMessages")]
+    public bool ChatMessages { get; set; } = true;
 
     [JsonPropertyName("TicksForUpdate")]
     public int TicksForUpdate { get; set; } = 1;

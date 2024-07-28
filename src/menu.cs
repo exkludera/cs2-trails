@@ -9,16 +9,14 @@ public partial class Trails : BasePlugin, IPluginConfig<TrailsConfig>
     [CommandHelper(minArgs: 0, whoCanExecute: CommandUsage.CLIENT_ONLY)]
     public void CommandOpenMenu(CCSPlayerController player, CommandInfo command)
     {
-        if (checkPermissions(player))
+        if (!HasPermission(player))
         {
             PrintToChat(player, Localizer["NoPermission"]);
             return;
         }
         
-        if (Config.CenterHtmlMenu)
-            OpenCenterMenu(player);
-        else
-            OpenChatMenu(player);
+        if (Config.CenterHtmlMenu) OpenCenterMenu(player);
+        else OpenChatMenu(player);
     }
 
     public void OpenChatMenu(CCSPlayerController player)

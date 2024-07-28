@@ -2,7 +2,6 @@
 using CounterStrikeSharp.API.Modules.Admin;
 using CounterStrikeSharp.API.Modules.Utils;
 using CounterStrikeSharp.API.Core.Capabilities;
-using CounterStrikeSharp.API.Core.Translations;
 using Microsoft.Extensions.Logging;
 using System.Drawing;
 
@@ -10,7 +9,7 @@ using Clientprefs.API;
 
 namespace Trails;
 
-public partial class Trails : BasePlugin, IPluginConfig<TrailsConfig>
+public partial class Trails : BasePlugin, IPluginConfig<Config>
 {
     private readonly PluginCapability<IClientprefsApi> g_PluginCapability = new("Clientprefs");
     private IClientprefsApi? ClientprefsApi;
@@ -23,13 +22,6 @@ public partial class Trails : BasePlugin, IPluginConfig<TrailsConfig>
 
     public int Tick { get; set; } = 0;
     private int colorIndex = 0;
-
-    public TrailsConfig Config { get; set; } = new TrailsConfig();
-    public void OnConfigParsed(TrailsConfig config)
-    {
-        config.Prefix = StringExtensions.ReplaceColorTags(config.Prefix);
-        Config = config;
-    }
 
     public void OnServerPrecacheResources(ResourceManifest manifest)
     {
@@ -63,15 +55,12 @@ public partial class Trails : BasePlugin, IPluginConfig<TrailsConfig>
     public void PrintToChat(CCSPlayerController player, string Message)
     {
         if (Config.ChatMessages)
-            player.PrintToChat($" {Config.Prefix} {Message}");
+            player.PrintToChat(Config.Prefix + Message);
     }
 
-    public bool checkPermissions(CCSPlayerController player)
+    public bool HasPermission(CCSPlayerController player)
     {
-        if (Config.PermissionFlag != "" && !AdminManager.PlayerHasPermissions(player, Config.PermissionFlag))
-            return true;
-
-        return false;
+        return !string.IsNullOrEmpty(Config.PermissionFlag) && AdminManager.PlayerHasPermissions(player, Config.PermissionFlag);
     }
 
     public static float VecCalculateDistance(Vector vector1, Vector vector2)
