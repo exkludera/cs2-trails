@@ -100,6 +100,12 @@ public static class Menu
     [CommandHelper(whoCanExecute: CommandUsage.CLIENT_ONLY)]
     public static void Command_OpenMenus(CCSPlayerController player, CommandInfo info)
     {
+        if (!_.HasPermission(player))
+        {
+            _.PrintToChat(player, _.Localizer["No Permission"]);
+            return;
+        }
+
         MenuManager.CloseActiveMenu(player);
         WasdManager.CloseMenu(player);
 
