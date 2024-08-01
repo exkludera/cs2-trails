@@ -1,55 +1,16 @@
 ﻿using CounterStrikeSharp.API.Core;
 using CounterStrikeSharp.API.Modules.Admin;
 using CounterStrikeSharp.API.Modules.Utils;
-using CounterStrikeSharp.API.Core.Capabilities;
-using Microsoft.Extensions.Logging;
 using System.Drawing;
-
-using Clientprefs.API;
 
 namespace Trails;
 
-public partial class Trails : BasePlugin, IPluginConfig<Config>
+public partial class Plugin : BasePlugin, IPluginConfig<Config>
 {
-    private readonly PluginCapability<IClientprefsApi> g_PluginCapability = new("Clientprefs");
-    private IClientprefsApi? ClientprefsApi;
-    private int TrailCookie = 0;
-
-    private Dictionary<CCSPlayerController, string> playerCookies = new();
-
-    static readonly Vector[] TrailLastOrigin = new Vector[64];
-    static readonly Vector[] TrailEndOrigin = new Vector[64];
-
-    public int Tick { get; set; } = 0;
-    private int colorIndex = 0;
-
     public void OnServerPrecacheResources(ResourceManifest manifest)
     {
         foreach (KeyValuePair<string, Trail> trail in Config.Trails)
             manifest.AddResource(trail.Value.File);
-    }
-
-    public void OnClientprefDatabaseReady()
-    {
-        if (ClientprefsApi == null) return;
-
-        TrailCookie = ClientprefsApi.RegPlayerCookie("Trail", "Which trail is equiped", CookieAccess.CookieAccess_Public);
-
-        if (TrailCookie == -1)
-        {
-            Logger.LogError("[Clientprefs-Trails] Failed to register/load Cookie");
-            return;
-        }
-    }
-
-    public void OnPlayerCookiesCached(CCSPlayerController player)
-    {
-        if (ClientprefsApi == null || TrailCookie == -1) return;
-
-        var cookieValue = ClientprefsApi.GetPlayerCookie(player, TrailCookie);
-
-        if (!string.IsNullOrEmpty(cookieValue))
-            playerCookies[player] = cookieValue;
     }
 
     public void PrintToChat(CCSPlayerController player, string Message)
@@ -60,7 +21,7 @@ public partial class Trails : BasePlugin, IPluginConfig<Config>
 
     public bool HasPermission(CCSPlayerController player)
     {
-        return !string.IsNullOrEmpty(Config.PermissionFlag) && AdminManager.PlayerHasPermissions(player, Config.PermissionFlag);
+        return !string.IsNullOrEmpty(Config.Permission) && AdminManager.PlayerHasPermissions(player, Config.Permission);
     }
 
     public static float VecCalculateDistance(Vector vector1, Vector vector2)
@@ -82,6 +43,7 @@ public partial class Trails : BasePlugin, IPluginConfig<Config>
         return vector.LengthSqr() == 0;
     }
 
+    private int colorIndex = 0;
     Color[] rainbowColors = {
         Color.FromArgb(255, 255, 0, 0),
         Color.FromArgb(255, 255, 25, 0),

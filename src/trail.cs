@@ -5,8 +5,12 @@ using System.Drawing;
 
 namespace Trails;
 
-public partial class Trails : BasePlugin, IPluginConfig<Config>
+public partial class Plugin : BasePlugin, IPluginConfig<Config>
 {
+    public int Tick { get; set; } = 0;
+    static readonly Vector[] TrailLastOrigin = new Vector[64];
+    static readonly Vector[] TrailEndOrigin = new Vector[64];
+
     public void OnTick()
     {
         Tick++;
@@ -43,8 +47,8 @@ public partial class Trails : BasePlugin, IPluginConfig<Config>
             {
                 if (trailData.File.EndsWith(".vpcf"))
                     CreateParticle(player, absOrigin, trailData);
-                else
-                    CreateBeam(player, absOrigin, trailData);
+
+                else CreateBeam(player, absOrigin, trailData);
             }
         }
     }

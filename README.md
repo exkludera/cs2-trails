@@ -39,9 +39,9 @@
 ```json
 {
   "Prefix": "{red}[{orange}T{yellow}r{green}a{lightblue}i{darkblue}l{purple}s{red}]",
-  "PermissionFlag": "@css/reservation",
+  "Permission": "@css/reservation",
   "MenuCommands": "trails,trail",
-  "CenterHtmlMenu": false,
+  "MenuType": "html",
   "ChatMessages": true,
   "TicksForUpdate": 1,
   "Trails": {
@@ -56,8 +56,8 @@
     "3": {
       "Name": "Red Trail",
       "Color": "255 0 0",
-      "Width": 2,
-      "Lifetime": 3
+      "Width": 3,
+      "Lifetime": 2
     },
     "4": {
       "Name": "Example Settings",
