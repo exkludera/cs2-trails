@@ -21,7 +21,7 @@ public partial class Plugin : BasePlugin, IPluginConfig<Config>
 
     public bool HasPermission(CCSPlayerController player)
     {
-        return !string.IsNullOrEmpty(Config.Permission) && AdminManager.PlayerHasPermissions(player, Config.Permission);
+        return string.IsNullOrEmpty(Config.Permission) || AdminManager.PlayerHasPermissions(player, Config.Permission);
     }
 
     public static float VecCalculateDistance(Vector vector1, Vector vector2)
