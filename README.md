@@ -27,7 +27,7 @@
 > [!NOTE]
 > inspired by [Nickelony/Trails-Chroma](https://github.com/Nickelony/Trails-Chroma)
 
-<img src="https://media.discordapp.net/attachments/1051988905320255509/1146537451750432778/ezgif.com-video-to-gif_2.gif?ex=66a359f6&is=66a20876&hm=768e346857f44792cf5b2917fe55b525522029ecccac95bb765b881baa6660d7&" width="250">>
+<img src="https://github.com/user-attachments/assets/53e486cc-8da4-45ab-bc6e-eb38145aba36" height="200px"> <br>
 
 <br>
 
@@ -70,3 +70,5 @@
   "ConfigVersion": 1
 }
 ```
+
+<br> <a href='https://ko-fi.com/exkludera' target='blank'><img src='https://cdn.ko-fi.com/cdn/kofi5.png' height='48px' alt='Buy Me a Coffee at ko-fi.com'></a>
